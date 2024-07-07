@@ -6,6 +6,7 @@ Delete_form::Delete_form(QWidget *parent) :
     ui(new Ui::Delete_form)
 {
     ui->setupUi(this);
+    //Соединение кнопок Ок и Cancel с слотами delete_com(),close()
     connect(this, SIGNAL(accepted()), SLOT(delete_com()));
     connect(this, SIGNAL(rejected()), SLOT(close()));
 }
@@ -22,20 +23,20 @@ void Delete_form::delete_com(){
     QDate d1=ui->dateEdit->date(), d2=ui->dateEdit_2->date();
     QString formate_date1, formate_date2;
 QString command1, command2, command3;
+//////////////////////////////////////////Приводим дату к формату гггг-мм-дд
     if(d1.month()<10){
             formate_date1="2024-0"+QString::number(d1.month());
     }else formate_date1="2024-"+QString::number(d1.month());
     if(d1.day()<10){
         formate_date1+=QString("-0"+QString::number(d1.day()));
     }else formate_date1+=QString("-"+QString::number(d1.day()));
-    //////////////////////////////////////////
     if(d2.month()<10){
             formate_date2="2024-0"+QString::number(d2.month());
     }else formate_date2="2024-"+QString::number(d2.month());
     if(d2.day()<10){
         formate_date2+=QString("-0"+QString::number(d2.day()));
     }else formate_date2+=QString("-"+QString::number(d2.day()));
-
+//////////////////////////////////////////
     QSqlDatabase db=QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
     db.setDatabaseName("../DB/My_db.db");
     db.open();

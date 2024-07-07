@@ -6,6 +6,7 @@ Insert_form::Insert_form(QWidget *parent) :
     ui(new Ui::Insert_form)
 {
     ui->setupUi(this);
+    //Соединение кнопок Ок и Cancel с слотами insert() ,close()
     connect(this, SIGNAL(accepted()), SLOT(insert()));
     connect(this, SIGNAL(rejected()), SLOT(close()));
 }
@@ -23,20 +24,20 @@ void Insert_form::insert(){
     QString formate_date1, formate_date2;
     double cost;
 QString command1, command2, command3;
+//////////////////////////////////////////Приводим дату к формату гггг-мм-дд
     if(d1.month()<10){
             formate_date1="2024-0"+QString::number(d1.month());
     }else formate_date1="2024-"+QString::number(d1.month());
     if(d1.day()<10){
         formate_date1+=QString("-0"+QString::number(d1.day()));
     }else formate_date1+=QString("-"+QString::number(d1.day()));
-    //////////////////////////////////////////
     if(d2.month()<10){
             formate_date2="2024-0"+QString::number(d2.month());
     }else formate_date2="2024-"+QString::number(d2.month());
     if(d2.day()<10){
         formate_date2+=QString("-0"+QString::number(d2.day()));
     }else formate_date2+=QString("-"+QString::number(d2.day()));
-
+//////////////////////////////////////////
     int day_count=d1.daysTo(d2);
     if(day_count>=0){
     QSqlDatabase db=QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
@@ -62,9 +63,9 @@ QString command1, command2, command3;
       query.next();
       cost*=query.value(rec.indexOf("Cost")).toDouble();
      cost*=ui->Count->text().toInt();
-     if(day_count==1)
+     if(day_count==1)//Если заказ выполняется день, то цена увеличивается на 25%
          cost=cost*1.25;
-     else if(day_count>=2)
+     else if(day_count>=2)//Если заказ выполняется больше 2 дней, то цена увеличивается на 15%
          cost=cost*1.15;
      command1="INSERT INTO Orders VALUES('"+account+"', '"+ui->Composition->text()+"', "+ui->Count->text()+", "
              +QString::number(cost)+", '"+formate_date1+"', '"+formate_date2+"');";

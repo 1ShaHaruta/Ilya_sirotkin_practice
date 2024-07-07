@@ -8,9 +8,11 @@ MainWindow::MainWindow(QWidget *parent):
 {
 //, db(new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE")))
     password_dlg->show();
+    /////////Связывают Input_Dialog(формочку ввода логина и пароля) и основную программу
     connect(password_dlg, SIGNAL(is_direction()), this, SLOT(change_status()));
     connect(password_dlg, SIGNAL(send_account(const QString&)), this, SLOT(set_account(const QString&)));
     connect(password_dlg, SIGNAL(rejected()), this, SLOT(close()));
+    ////////
     QPalette pal1;
     pal1.setBrush (this->backgroundRole () ,QBrush (QPixmap ("../Images/roza_1920x1080.jpg")));
     this->setPalette(pal1);
@@ -23,18 +25,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::change_status(){
+void MainWindow::change_status(){//меняет статус пользователя если password_dlg отправила сигнал is_direction()
     ui->status->setText("direction");
     direction=true;
 }
 
-void MainWindow::set_account(const QString& str){
+void MainWindow::set_account(const QString& str){//меняет аккаунт пользователя если password_dlg отправила сигнал send_account(const QString&))
     account=str;
     ui->name->setText(ui->name->text()+str+", Status: ");
 }
 
-
-void MainWindow::on_action_triggered()
+///////////////////////Три нижние функции доступны только пользователям со статусом direction
+void MainWindow::on_action_triggered()//функция отображает все цветы
 {
     if(direction){
     db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
@@ -67,7 +69,7 @@ void MainWindow::on_action_triggered()
 }
 
 
-void MainWindow::on_action_2_triggered()
+void MainWindow::on_action_2_triggered()//функция отображает все композиции
 {
     if(direction){
         db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
@@ -89,7 +91,8 @@ void MainWindow::on_action_2_triggered()
 
         while (query.next()){
             flower_name=query.value(rec.indexOf("Flower_name")).toString();
-            command2="SELECT Cost FROM Flowers WHERE Name glob '"+flower_name+"';";
+            command2="SELECT Cost FROM Flowers WHERE Name glob '"+flower_name+"';";//необходимо чтобы посчитать стоимость композиции,
+            //потому что в базе данных, в таблице Flowers в указанна цена одного цветка, а в таблице Сomposition кол-во цветов
             query2.exec(command2);
             rec2=query2.record();
             query2.next();
@@ -110,7 +113,7 @@ void MainWindow::on_action_2_triggered()
 
 
 
-void MainWindow::on_action_3_triggered()
+void MainWindow::on_action_3_triggered()//функция отображает все заказы
 {
     if(direction){
         db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
@@ -146,8 +149,8 @@ void MainWindow::on_action_3_triggered()
         }
 }
 
-
-void MainWindow::on_action_4_triggered()
+///////////////////////////Три верхние функции доступны только пользователям со статусом direction
+void MainWindow::on_action_4_triggered()//функция отображает заказы пользователя
 {
     if(account.isEmpty()){
         QMessageBox msg(QMessageBox::Information, "Message", "<b>Вы не вошли в систему</b>",QMessageBox::Ok);
@@ -182,7 +185,7 @@ void MainWindow::on_action_4_triggered()
 }
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pushButton_clicked()//функция отображает прибыль за указынный период
 {
     if(account.isEmpty()){
         QMessageBox msg(QMessageBox::Information, "Message", "<b>Вы не вошли в систему</b>",QMessageBox::Ok);
@@ -190,21 +193,21 @@ void MainWindow::on_pushButton_clicked()
     }else{
     QDate d1=ui->dateEdit_2->date(), d2=ui->dateEdit->date();
     QString formate_date1, formate_date2;
-
+     //////////////////////////////////////////Приводим дату к формату гггг-мм-дд
     if(d1.month()<10){
             formate_date1="2024-0"+QString::number(d1.month());
     }else formate_date1="2024-"+QString::number(d1.month());
     if(d1.day()<10){
         formate_date1+=QString("-0"+QString::number(d1.day()));
     }else formate_date1+=QString("-"+QString::number(d1.day()));
-    //////////////////////////////////////////
+
     if(d2.month()<10){
             formate_date2="2024-0"+QString::number(d2.month());
     }else formate_date2="2024-"+QString::number(d2.month());
     if(d2.day()<10){
         formate_date2+=QString("-0"+QString::number(d2.day()));
     }else formate_date2+=QString("-"+QString::number(d2.day()));
-
+     //////////////////////////////////////////
     int day_count=d1.daysTo(d2);
     if(day_count>=0){
     db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
@@ -234,7 +237,7 @@ void MainWindow::on_pushButton_clicked()
 }
 
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_pushButton_2_clicked()//функция отображает популярность композиций
 {
     if(account.isEmpty()){
         QMessageBox msg(QMessageBox::Information, "Message", "<b>Вы не вошли в систему</b>",QMessageBox::Ok);
@@ -267,7 +270,7 @@ void MainWindow::on_pushButton_2_clicked()
 }
 
 
-void MainWindow::on_pushButton_3_clicked()
+void MainWindow::on_pushButton_3_clicked()//функция отображает популярность цветов
 {
     if(account.isEmpty()){
         QMessageBox msg(QMessageBox::Information, "Message", "<b>Вы не вошли в систему</b>",QMessageBox::Ok);
@@ -275,21 +278,20 @@ void MainWindow::on_pushButton_3_clicked()
     }else{
     QDate d1=ui->dateEdit_2->date(), d2=ui->dateEdit->date();
     QString formate_date1, formate_date2;
-
+//////////////////////////////////////////Приводим дату к формату гггг-мм-дд
     if(d1.month()<10){
             formate_date1="2024-0"+QString::number(d1.month());
     }else formate_date1="2024-"+QString::number(d1.month());
     if(d1.day()<10){
         formate_date1+=QString("-0"+QString::number(d1.day()));
     }else formate_date1+=QString("-"+QString::number(d1.day()));
-    //////////////////////////////////////////
     if(d2.month()<10){
             formate_date2="2024-0"+QString::number(d2.month());
     }else formate_date2="2024-"+QString::number(d2.month());
     if(d2.day()<10){
         formate_date2+=QString("-0"+QString::number(d2.day()));
     }else formate_date2+=QString("-"+QString::number(d2.day()));
-
+//////////////////////////////////////////
     int day_count=d1.daysTo(d2);
     if(day_count>=0){
     db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
@@ -326,7 +328,7 @@ void MainWindow::on_pushButton_3_clicked()
 }
 
 
-void MainWindow::on_comboBox_activated(int index)
+void MainWindow::on_comboBox_activated(int index)//combobox с функцией Insert
 {
     if(account.isEmpty()){
         QMessageBox msg(QMessageBox::Information, "Message", "<b>Вы не вошли в систему</b>",QMessageBox::Ok);
@@ -338,7 +340,7 @@ ui->comboBox->hide();
 ui->comboBox->show();
         break;
     case 1:
-        insert_frm=new Insert_form;
+        insert_frm=new Insert_form;//Создаем и открываем формочку Insert_form, содержащую функции по добавлению заказов см.insert_form.cpp
         insert_frm->getName(account);
         insert_frm->show();
         break;
@@ -349,7 +351,7 @@ ui->comboBox->show();
 }
 
 
-void MainWindow::on_comboBox_2_activated(int index)
+void MainWindow::on_comboBox_2_activated(int index)//combobox с функцией Delete
 {
     if(account.isEmpty()){
         QMessageBox msg(QMessageBox::Information, "Message", "<b>Вы не вошли в систему</b>",QMessageBox::Ok);
@@ -361,7 +363,7 @@ ui->comboBox_2->hide();
 ui->comboBox_2->show();
         break;
     case 1:
-        delete_frm=new Delete_form;
+        delete_frm=new Delete_form;//Создаем и открываем формочку Insert_form, содержащую функции по добавлению заказов см. delete_form.cpp
         delete_frm->getName(account);
         delete_frm->show();
         break;
@@ -372,7 +374,7 @@ ui->comboBox_2->show();
 }
 
 
-void MainWindow::on_pushButton_4_clicked()
+void MainWindow::on_pushButton_4_clicked()//функция отображает все заказы поступившие указанного числа
 {
     if(account.isEmpty()){
         QMessageBox msg(QMessageBox::Information, "Message", "<b>Вы не вошли в систему</b>",QMessageBox::Ok);
@@ -380,21 +382,20 @@ void MainWindow::on_pushButton_4_clicked()
     }else{
     QDate d1=ui->dateEdit_2->date(), d2=ui->dateEdit->date();
     QString formate_date1, formate_date2;
-
+//////////////////////////////////////////Приводим дату к формату гггг-мм-дд
     if(d1.month()<10){
             formate_date1="2024-0"+QString::number(d1.month());
     }else formate_date1="2024-"+QString::number(d1.month());
     if(d1.day()<10){
         formate_date1+=QString("-0"+QString::number(d1.day()));
     }else formate_date1+=QString("-"+QString::number(d1.day()));
-    //////////////////////////////////////////
     if(d2.month()<10){
             formate_date2="2024-0"+QString::number(d2.month());
     }else formate_date2="2024-"+QString::number(d2.month());
     if(d2.day()<10){
         formate_date2+=QString("-0"+QString::number(d2.day()));
     }else formate_date2+=QString("-"+QString::number(d2.day()));
-
+////////////////////////////////////////
     int day_count=d1.daysTo(d2);
     if(day_count>=0){
     db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));

@@ -1,5 +1,9 @@
 #include "validator.h"
 
+//Validator чисто статический класс с функциями которые проверяют 1.Есть ли такой пользователь в БД check_customer(..),
+//2.Есть ли у пользователя статус "direction" check_right(..),
+//3. Правильно ли введены данные пользователя при регистрации check_correctness(..)
+
 bool Validator::check_customer(const QString& _login, const QString& _password){
      if(_login.isEmpty()||_password.isEmpty()) return 0;
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
@@ -37,7 +41,7 @@ bool Validator::check_correctness(const QString &_login, const QString &_passwor
     query.exec(command1);
      QSqlRecord rec= query.record();
     query.next();
-    QRegularExpression exp1("^\\w{4,20}$"), exp2("^[a-zA-Z0-9]{4,20}$");
+    QRegularExpression exp1("^\\w{4,20}$"), exp2("^[a-zA-Z0-9]{4,20}$");//Данные (логин и пароль) должны быть такого формата
     if(exp1.match(_login).hasMatch()&&exp2.match(_password).hasMatch()&&query.value(rec.indexOf("Login")).toString()!=_login){
         db.close();
         return 1;

@@ -20,17 +20,17 @@
      <height>556</height>
     </size>
    </property>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="display">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>280</y>
-      <width>67</width>
-      <height>17</height>
+      <x>0</x>
+      <y>0</y>
+      <width>1920</width>
+      <height>1080</height>
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
    </widget>
   </widget>

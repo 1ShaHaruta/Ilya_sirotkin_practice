@@ -43,8 +43,62 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Инструмент</string>
+    </property>
+    <addaction name="pen_action"/>
+    <addaction name="rect_action"/>
+    <addaction name="triangle_action"/>
+    <addaction name="circle_action"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Действие</string>
+    </property>
+    <addaction name="move_action"/>
+    <addaction name="tie_action"/>
+    <addaction name="remove_action"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="pen_action">
+   <property name="text">
+    <string>Карандаш</string>
+   </property>
+  </action>
+  <action name="rect_action">
+   <property name="text">
+    <string>Прямоугольник</string>
+   </property>
+  </action>
+  <action name="triangle_action">
+   <property name="text">
+    <string>Треугольник</string>
+   </property>
+  </action>
+  <action name="circle_action">
+   <property name="text">
+    <string>Овал</string>
+   </property>
+  </action>
+  <action name="move_action">
+   <property name="text">
+    <string>Перемещение</string>
+   </property>
+  </action>
+  <action name="tie_action">
+   <property name="text">
+    <string>Связывание</string>
+   </property>
+  </action>
+  <action name="remove_action">
+   <property name="text">
+    <string>Удаление</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

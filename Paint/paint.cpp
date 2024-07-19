@@ -4,6 +4,7 @@
 Paint::Paint(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow), paint_device(new Paint_device())
 {
     ui->setupUi(this);
+    ui->display->setPixmap(QPixmap::fromImage(*paint_device->getImage()));
 
 }
 Paint::~Paint()
@@ -26,4 +27,28 @@ void Paint::mouseReleaseEvent(QMouseEvent *event){
     ui->display->setPixmap(QPixmap::fromImage(*paint_device->getImage()));
 }
 
+
+
+void Paint::on_pen_action_triggered()
+{
+    paint_device->select_pen();
+}
+
+
+void Paint::on_rect_action_triggered()
+{
+    paint_device->select_figure(Figure::Rect);
+}
+
+
+void Paint::on_triangle_action_triggered()
+{
+    paint_device->select_figure(Figure::Triangle);
+}
+
+
+void Paint::on_circle_action_triggered()
+{
+    paint_device->select_figure(Figure::Circle);
+}
 

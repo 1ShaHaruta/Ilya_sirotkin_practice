@@ -22,9 +22,16 @@ protected:
     //void keyReleaseEvent(QKeyEvent *event) override;
 private slots:
 
+    void on_pen_action_triggered();
+
+    void on_rect_action_triggered();
+
+    void on_triangle_action_triggered();
+
+    void on_circle_action_triggered();
+
 private:
     Ui::MainWindow *ui;
     Paint_device* paint_device;
-    QEvent* _event;
 };
 #endif // PAINT_H

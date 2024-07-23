@@ -52,3 +52,21 @@ void Paint::on_circle_action_triggered()
     paint_device->select_figure(Figure::Circle);
 }
 
+
+void Paint::on_move_action_triggered()
+{
+    paint_device->select_moving();
+}
+
+
+void Paint::on_tie_action_triggered()
+{
+    paint_device->select_tie();
+}
+
+
+void Paint::on_remove_action_triggered()
+{
+    paint_device->select_removing();
+}
+

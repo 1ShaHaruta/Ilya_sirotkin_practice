@@ -30,6 +30,12 @@ private slots:
 
     void on_circle_action_triggered();
 
+    void on_move_action_triggered();
+
+    void on_tie_action_triggered();
+
+    void on_remove_action_triggered();
+
 private:
     Ui::MainWindow *ui;
     Paint_device* paint_device;

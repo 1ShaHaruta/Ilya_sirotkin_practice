@@ -5,30 +5,50 @@
 #include <QPainter>
 #include <QEvent>
 #include <QMouseEvent>
+#include <memory>
 enum Figure {None, Rect, Triangle, Circle};
 
 class My_Shape:public QPolygonF{
+    // Q_OBJECT
 private:
     QPointF center;
+QList<QPolygonF*> ties_pointers;
 public:
     My_Shape(const QPointF& p):QPolygonF(), center(p){
-
     }
-My_Shape()=delete;
-    ~My_Shape(){
+    My_Shape()=default;
 
+void set_center(const QPoint& p){
+    center=p;
+}
+
+void change_coordinates(double _x_offset, double _y_offset){
+    center.setX(center.x()+_x_offset);
+    center.setY(center.y()+_y_offset);
+    for(QPointF& p:(*this)){
+        p+=QPointF(_x_offset,_y_offset);
     }
+}
+const QPointF& get_center() const {
+    return center;
+}
 
-};
+QList<QPolygonF*>& acces_to_ties_pointers(){
+    return ties_pointers;
+}
 
-class My_Triangle:public QPolygonF{
-private:
-public:
-};
+My_Shape& operator=(const My_Shape& s){
+    center=s.center;
+    ties_pointers=s.ties_pointers;
+    return *this;
+}
+   ~My_Shape(){
+    for(QPolygonF* poly:ties_pointers){
+    static_cast<My_Shape*>(poly)->ties_pointers.removeOne(this);
+        QTextStream(stdout)<<"buf.size() "<<static_cast<My_Shape*>(poly)->ties_pointers.size();
+    }
+}
 
-class My_Circle:public QPolygonF{
-private:
-public:
 };
 
 class Paint_device : public QWidget
@@ -45,16 +65,30 @@ public:
         return base;
     }
     void select_pen(){
-        figure_is_active=false;
+        figure_is_active=moving_is_active=removing_is_active=tie_is_active=false;
         pen_is_active=true;
         figure_type=Figure::None;
     }
     void select_figure(Figure fgr){
-        pen_is_active=false;
+        pen_is_active=moving_is_active=removing_is_active=tie_is_active=false;
         figure_is_active=true;
         figure_type=fgr;
     }
-
+    void select_moving(){
+        figure_is_active=pen_is_active=removing_is_active=tie_is_active=false;
+        moving_is_active=true;
+        figure_type=Figure::None;
+    }
+    void select_tie(){
+        figure_is_active=moving_is_active=removing_is_active=pen_is_active=false;
+        tie_is_active=true;
+        figure_type=Figure::None;
+    }
+    void select_removing(){
+        figure_is_active=moving_is_active=pen_is_active=tie_is_active=false;
+        removing_is_active=true;
+        figure_type=Figure::None;
+    }
 signals:
 
 private:
@@ -62,15 +96,19 @@ private:
     QImage* base;
     QPen pen;
     QPen rubber;
-    //QBrush brush;
     QColor clr;
     QColor background;
-    QPointF* last_point;
+    QPointF last_point;
+    My_Shape* figure_to_tie;
+    My_Shape* figure_to_move;
+    bool is_figure_to_tie_selected;
     Figure figure_type;
-    QList<QPolygonF> figures_arr;
+    QList<QPolygonF*> figures_arr;
     bool pen_is_active;
     bool figure_is_active;
-
+bool moving_is_active;
+bool removing_is_active;
+bool tie_is_active;
 };
 
 #endif // PAINT_DEVICE_H

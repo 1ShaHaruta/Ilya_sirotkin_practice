@@ -27,6 +27,9 @@ void Paint::mouseReleaseEvent(QMouseEvent *event){
     ui->display->setPixmap(QPixmap::fromImage(*paint_device->getImage()));
 }
 
+void Paint::keyReleaseEvent(QKeyEvent *event) {
+    paint_device->keyReleaseEvent(event);
+}
 
 
 void Paint::on_pen_action_triggered()
@@ -68,5 +71,19 @@ void Paint::on_tie_action_triggered()
 void Paint::on_remove_action_triggered()
 {
     paint_device->select_removing();
+}
+
+
+void Paint::on_save_action_triggered()
+{
+paint_device->save_data();
+}
+
+
+void Paint::on_load_action_triggered()
+{
+QString name=QFileDialog::getOpenFileName();
+ paint_device->load_data(name);
+ ui->display->setPixmap(QPixmap::fromImage(*paint_device->getImage()));
 }
 

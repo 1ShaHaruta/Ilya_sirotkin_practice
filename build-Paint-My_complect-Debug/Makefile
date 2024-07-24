@@ -52,13 +52,17 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../Paint/main.cpp \
+SOURCES       = ../Paint/input_form.cpp \
+		../Paint/main.cpp \
 		../Paint/paint.cpp \
-		../Paint/paint_device.cpp moc_paint.cpp \
+		../Paint/paint_device.cpp moc_input_form.cpp \
+		moc_paint.cpp \
 		moc_paint_device.cpp
-OBJECTS       = main.o \
+OBJECTS       = input_form.o \
+		main.o \
 		paint.o \
 		paint_device.o \
+		moc_input_form.o \
 		moc_paint.o \
 		moc_paint_device.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
@@ -105,6 +109,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-clang/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf \
+		../Paint/.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf \
@@ -125,8 +130,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf \
-		../Paint/Paint.pro ../Paint/paint.h \
-		../Paint/paint_device.h ../Paint/main.cpp \
+		../Paint/Paint.pro ../Paint/input_form.h \
+		../Paint/paint.h \
+		../Paint/paint_device.h ../Paint/input_form.cpp \
+		../Paint/main.cpp \
 		../Paint/paint.cpp \
 		../Paint/paint_device.cpp
 QMAKE_TARGET  = Paint
@@ -184,6 +191,7 @@ Makefile: ../Paint/Paint.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-clang/q
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-clang/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf \
@@ -253,6 +261,7 @@ Makefile: ../Paint/Paint.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-clang/q
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-clang/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf:
@@ -292,8 +301,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Paint/paint.h ../Paint/paint_device.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Paint/main.cpp ../Paint/paint.cpp ../Paint/paint_device.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Paint/input_form.h ../Paint/paint.h ../Paint/paint_device.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Paint/input_form.cpp ../Paint/main.cpp ../Paint/paint.cpp ../Paint/paint_device.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Paint/mainwindow.ui $(DISTDIR)/
 
 
@@ -326,16 +335,23 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 	clang++ -pipe -g -std=gnu++1z -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_paint.cpp moc_paint_device.cpp
+compiler_moc_header_make_all: moc_input_form.cpp moc_paint.cpp moc_paint_device.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_paint.cpp moc_paint_device.cpp
+	-$(DEL_FILE) moc_input_form.cpp moc_paint.cpp moc_paint_device.cpp
+moc_input_form.cpp: ../Paint/input_form.h \
+		moc_predefs.h \
+		/usr/lib/qt6/libexec/moc
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include '/home/ilya/Рабочий стол/Ilya_sirotkin_practice/build-Paint-My_complect-Debug/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-clang -I'/home/ilya/Рабочий стол/Ilya_sirotkin_practice/Paint' -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/llvm-14/lib/clang/14.0.0/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../Paint/input_form.h -o moc_input_form.cpp
+
 moc_paint.cpp: ../Paint/paint.h \
 		../Paint/paint_device.h \
+		../Paint/input_form.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include '/home/ilya/Рабочий стол/Ilya_sirotkin_practice/build-Paint-My_complect-Debug/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-clang -I'/home/ilya/Рабочий стол/Ilya_sirotkin_practice/Paint' -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/llvm-14/lib/clang/14.0.0/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../Paint/paint.h -o moc_paint.cpp
 
 moc_paint_device.cpp: ../Paint/paint_device.h \
+		../Paint/input_form.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include '/home/ilya/Рабочий стол/Ilya_sirotkin_practice/build-Paint-My_complect-Debug/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-clang -I'/home/ilya/Рабочий стол/Ilya_sirotkin_practice/Paint' -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/include/c++/11 -I/usr/include/x86_64-linux-gnu/c++/11 -I/usr/include/c++/11/backward -I/usr/lib/llvm-14/lib/clang/14.0.0/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../Paint/paint_device.h -o moc_paint_device.cpp
@@ -361,17 +377,26 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ####### Compile
 
+input_form.o: ../Paint/input_form.cpp ../Paint/input_form.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o input_form.o ../Paint/input_form.cpp
+
 main.o: ../Paint/main.cpp ../Paint/paint.h \
-		../Paint/paint_device.h
+		../Paint/paint_device.h \
+		../Paint/input_form.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Paint/main.cpp
 
 paint.o: ../Paint/paint.cpp ../Paint/paint.h \
 		../Paint/paint_device.h \
+		../Paint/input_form.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o paint.o ../Paint/paint.cpp
 
-paint_device.o: ../Paint/paint_device.cpp ../Paint/paint_device.h
+paint_device.o: ../Paint/paint_device.cpp ../Paint/paint_device.h \
+		../Paint/input_form.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o paint_device.o ../Paint/paint_device.cpp
+
+moc_input_form.o: moc_input_form.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_input_form.o moc_input_form.cpp
 
 moc_paint.o: moc_paint.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_paint.o moc_paint.cpp

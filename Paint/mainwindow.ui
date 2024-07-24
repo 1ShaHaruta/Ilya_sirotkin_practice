@@ -59,6 +59,8 @@
     <addaction name="move_action"/>
     <addaction name="tie_action"/>
     <addaction name="remove_action"/>
+    <addaction name="save_action"/>
+    <addaction name="load_action"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -97,6 +99,16 @@
   <action name="remove_action">
    <property name="text">
     <string>Удаление</string>
+   </property>
+  </action>
+  <action name="save_action">
+   <property name="text">
+    <string>Сохранить</string>
+   </property>
+  </action>
+  <action name="load_action">
+   <property name="text">
+    <string>Загрузить</string>
    </property>
   </action>
  </widget>

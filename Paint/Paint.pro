@@ -9,11 +9,13 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    input_form.cpp \
     main.cpp \
     paint.cpp \
     paint_device.cpp
 
 HEADERS += \
+    input_form.h \
     paint.h \
     paint_device.h
 

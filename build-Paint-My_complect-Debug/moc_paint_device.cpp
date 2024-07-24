@@ -8,6 +8,7 @@
 
 #include <memory>
 #include "../Paint/paint_device.h"
+#include <QtGui/qtextcursor.h>
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
@@ -22,17 +23,22 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Paint_device_t {
-    const uint offsetsAndSize[2];
-    char stringdata0[13];
+    const uint offsetsAndSize[10];
+    char stringdata0[58];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(offsetof(qt_meta_stringdata_Paint_device_t, stringdata0) + ofs), len 
 static const qt_meta_stringdata_Paint_device_t qt_meta_stringdata_Paint_device = {
     {
-QT_MOC_LITERAL(0, 12) // "Paint_device"
+QT_MOC_LITERAL(0, 12), // "Paint_device"
+QT_MOC_LITERAL(13, 20), // "get_saving_file_name"
+QT_MOC_LITERAL(34, 0), // ""
+QT_MOC_LITERAL(35, 3), // "str"
+QT_MOC_LITERAL(39, 18) // "save_data_function"
 
     },
-    "Paint_device"
+    "Paint_device\0get_saving_file_name\0\0"
+    "str\0save_data_function"
 };
 #undef QT_MOC_LITERAL
 
@@ -42,22 +48,35 @@ static const uint qt_meta_data_Paint_device[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-       0,    0, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
 
+ // slots: name, argc, parameters, tag, flags, initial metatype offsets
+       1,    1,   26,    2, 0x08,    1 /* Private */,
+       4,    0,   29,    2, 0x08,    3 /* Private */,
+
+ // slots: parameters
+    QMetaType::Void, QMetaType::QString,    3,
+    QMetaType::Void,
+
        0        // eod
 };
 
 void Paint_device::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    (void)_o;
-    (void)_id;
-    (void)_c;
-    (void)_a;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        auto *_t = static_cast<Paint_device *>(_o);
+        (void)_t;
+        switch (_id) {
+        case 0: _t->get_saving_file_name((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 1: _t->save_data_function(); break;
+        default: ;
+        }
+    }
 }
 
 const QMetaObject Paint_device::staticMetaObject = { {
@@ -68,7 +87,7 @@ const QMetaObject Paint_device::staticMetaObject = { {
     nullptr,
 qt_incomplete_metaTypeArray<qt_meta_stringdata_Paint_device_t
 , QtPrivate::TypeAndForceComplete<Paint_device, std::true_type>
-
+, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<QString, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
 
 
 >,
@@ -92,6 +111,17 @@ void *Paint_device::qt_metacast(const char *_clname)
 int Paint_device::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QWidget::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 2)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 2;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 2)
+            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
+        _id -= 2;
+    }
     return _id;
 }
 QT_WARNING_POP

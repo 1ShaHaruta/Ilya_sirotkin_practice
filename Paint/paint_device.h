@@ -5,7 +5,11 @@
 #include <QPainter>
 #include <QEvent>
 #include <QMouseEvent>
-#include <memory>
+#include <QFile>
+#include <QMessageBox>
+#include <QFileDialog>
+#include "input_form.h"
+
 enum Figure {None, Rect, Triangle, Circle};
 
 class My_Shape:public QPolygonF{
@@ -18,7 +22,7 @@ public:
     }
     My_Shape()=default;
 
-void set_center(const QPoint& p){
+void set_center(const QPointF& p){
     center=p;
 }
 
@@ -60,7 +64,7 @@ public:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
-   // void keyReleaseEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
     QImage* getImage()const{
         return base;
     }
@@ -89,9 +93,17 @@ public:
         removing_is_active=true;
         figure_type=Figure::None;
     }
+    void load_data(const QString& name);
+    void save_data();
 signals:
 
+private slots:
+    void get_saving_file_name(QString str){
+        saving_file=str;
+    }
+    void save_data_function();
 private:
+    Input_form* form;
     QPainter* painter;
     QImage* base;
     QPen pen;
@@ -104,11 +116,14 @@ private:
     bool is_figure_to_tie_selected;
     Figure figure_type;
     QList<QPolygonF*> figures_arr;
+    QString saving_file;
+    QString folder_name;
     bool pen_is_active;
     bool figure_is_active;
 bool moving_is_active;
 bool removing_is_active;
 bool tie_is_active;
+bool figure_is_active_copy, pen_is_active_copy, moving_is_active_copy,tie_is_active_copy;
 };
 
 #endif // PAINT_DEVICE_H

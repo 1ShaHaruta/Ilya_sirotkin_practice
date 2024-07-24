@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QPixmap>
+#include <QFileDialog>
 #include "paint_device.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,7 +20,7 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
-    //void keyReleaseEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
 private slots:
 
     void on_pen_action_triggered();
@@ -35,6 +36,10 @@ private slots:
     void on_tie_action_triggered();
 
     void on_remove_action_triggered();
+
+    void on_save_action_triggered();
+
+    void on_load_action_triggered();
 
 private:
     Ui::MainWindow *ui;

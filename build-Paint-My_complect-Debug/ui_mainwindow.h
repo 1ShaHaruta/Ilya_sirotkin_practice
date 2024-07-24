@@ -31,6 +31,8 @@ public:
     QAction *move_action;
     QAction *tie_action;
     QAction *remove_action;
+    QAction *save_action;
+    QAction *load_action;
     QWidget *centralwidget;
     QLabel *display;
     QMenuBar *menubar;
@@ -57,6 +59,10 @@ public:
         tie_action->setObjectName(QString::fromUtf8("tie_action"));
         remove_action = new QAction(MainWindow);
         remove_action->setObjectName(QString::fromUtf8("remove_action"));
+        save_action = new QAction(MainWindow);
+        save_action->setObjectName(QString::fromUtf8("save_action"));
+        load_action = new QAction(MainWindow);
+        load_action->setObjectName(QString::fromUtf8("load_action"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         centralwidget->setMinimumSize(QSize(800, 556));
@@ -85,6 +91,8 @@ public:
         menu_2->addAction(move_action);
         menu_2->addAction(tie_action);
         menu_2->addAction(remove_action);
+        menu_2->addAction(save_action);
+        menu_2->addAction(load_action);
 
         retranslateUi(MainWindow);
 
@@ -101,6 +109,8 @@ public:
         move_action->setText(QCoreApplication::translate("MainWindow", "\320\237\320\265\321\200\320\265\320\274\320\265\321\211\320\265\320\275\320\270\320\265", nullptr));
         tie_action->setText(QCoreApplication::translate("MainWindow", "\320\241\320\262\321\217\320\267\321\213\320\262\320\260\320\275\320\270\320\265", nullptr));
         remove_action->setText(QCoreApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\265\320\275\320\270\320\265", nullptr));
+        save_action->setText(QCoreApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", nullptr));
+        load_action->setText(QCoreApplication::translate("MainWindow", "\320\227\320\260\320\263\321\200\321\203\320\267\320\270\321\202\321\214", nullptr));
         display->setText(QString());
         menu->setTitle(QCoreApplication::translate("MainWindow", "\320\230\320\275\321\201\321\202\321\200\321\203\320\274\320\265\320\275\321\202", nullptr));
         menu_2->setTitle(QCoreApplication::translate("MainWindow", "\320\224\320\265\320\271\321\201\321\202\320\262\320\270\320\265", nullptr));

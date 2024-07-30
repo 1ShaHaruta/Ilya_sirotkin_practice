@@ -1,5 +1,5 @@
 #include "input_form.h"
-
+//Данная формочка используется для ввода пользователем имени сохраняемого файла
 Input_form::Input_form(QWidget* pwgt):QDialog(pwgt) {
     line=new QLineEdit;
     label=new QLabel("Введите имя файла ");

@@ -1,3 +1,4 @@
+//Сироткин Илья 5 группа
 #ifndef PAINT_H
 #define PAINT_H
 

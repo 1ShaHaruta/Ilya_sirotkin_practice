@@ -1,3 +1,4 @@
+//Сироткин Илья 5 группа
 #ifndef INPUT_FORM_H
 #define INPUT_FORM_H
 #include <QLineEdit>
@@ -7,7 +8,7 @@
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QString>
-class Input_form:public QDialog{
+class Input_form:public QDialog{//Данная формочка используется для ввода пользователем имени сохраняемого файла
     Q_OBJECT
 private:
     QLineEdit* line;

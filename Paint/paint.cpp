@@ -1,3 +1,4 @@
+//Сироткин Илья 5 группа
 #include "paint.h"
 #include "ui_mainwindow.h"
 

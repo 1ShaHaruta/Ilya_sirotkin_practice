@@ -1,3 +1,4 @@
+//Сироткин Илья 5 группа
 #include "paint_device.h"
 
 Paint_device::Paint_device(QWidget *parent)
@@ -23,7 +24,7 @@ Paint_device::Paint_device(QWidget *parent)
     rubber.setStyle(Qt::SolidLine);
 
     painter->setPen(pen);
-    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->setRenderHint(QPainter::Antialiasing, true);//технология сглаживния нарисованного
     connect(form, SIGNAL(sent_str(QString)),this, SLOT(get_saving_file_name(QString)));
     connect(form, SIGNAL(input_form_closed()), this, SLOT(save_data_function()));
 }
@@ -31,7 +32,11 @@ Paint_device::~Paint_device(){
     painter->end();
     delete base;
     delete painter;
+    delete figure_to_tie;
+    delete figure_to_move;
+    delete form;
 }
+
 void Paint_device::mousePressEvent(QMouseEvent* event){
     if(event->button()==Qt::LeftButton){
         QPointF current_point=event->pos();
@@ -44,7 +49,7 @@ void Paint_device::mousePressEvent(QMouseEvent* event){
     for(QPolygonF* poly: figures_arr){
         if(poly->containsPoint(current_point, Qt::FillRule::WindingFill)){
             if(!is_figure_to_tie_selected){
-            figure_to_tie=static_cast<My_Shape*>(poly);
+            figure_to_tie=static_cast<My_Shape*>(poly);//так как под QPolygonF* poly содержаться объекты типа My_Shape, то такое преобраазоваание возможно
             is_figure_to_tie_selected=true;
             }else if(figure_to_tie!=poly){
                is_figure_to_tie_selected=false;
@@ -122,7 +127,6 @@ void Paint_device::mouseReleaseEvent(QMouseEvent *event){
                 <<current_point<<QPointF((last_point).x(),current_point.y())<<last_point;
              painter->drawPolyline(*rect);
              figures_arr.append(rect);
-             QTextStream(stdout)<<figures_arr.size();
              break;
          }
          case Figure::Triangle :{
@@ -132,7 +136,6 @@ void Paint_device::mouseReleaseEvent(QMouseEvent *event){
                    <<current_point<<QPointF((last_point).x(),current_point.y());
              painter->drawPolyline(*triangle);
              figures_arr.append(triangle);
-             QTextStream(stdout)<<figures_arr.size();
              break;
          }
          case Figure::Circle :{
@@ -150,7 +153,6 @@ void Paint_device::mouseReleaseEvent(QMouseEvent *event){
              }
              painter->drawPolyline(*circle);
              figures_arr.append(circle);
-             QTextStream(stdout)<<figures_arr.size();
              break;
          }
          case Figure::None :{
@@ -206,12 +208,12 @@ void Paint_device::keyReleaseEvent(QKeyEvent *event) {
 }
 
 
-void Paint_device::load_data(const QString& name){
+void Paint_device::load_data(const QString& name){//десериализация бинарного файла, в котором содержится изображение и лист фигур
     QFile file(name);
     file.open(QIODevice::ReadOnly);
     if(!file.isOpen()){
         QMessageBox::warning(this, "Предупреждение","Файл не открыт",QMessageBox::Ok,Qt::NoButton);
-    }
+    }else{
     QDataStream stream(&file);
 
     int size;
@@ -222,18 +224,16 @@ void Paint_device::load_data(const QString& name){
         int a;
         stream>>a;
         figures_sizes.push_back(a);
-        QTextStream(stdout)<<""<<Qt::endl<<a;
     }
     for(int figure_size:figures_sizes){
         My_Shape* poly_buf = new My_Shape;
         QPointF p;
         stream>>p;
         poly_buf->set_center(p);
-        QTextStream(stdout)<<""<<Qt::endl<<p.x()<<" "<<p.y();
+
         for(int i=0;i<figure_size-1;++i){
             QPointF p;
             stream>>p;
-            QTextStream(stdout)<<""<<Qt::endl<<p.x()<<" "<<p.y();
             *poly_buf<<p;
 
         }
@@ -243,7 +243,6 @@ void Paint_device::load_data(const QString& name){
         int a;
         stream>>a;
         figure_tie_pointers_sizes.push_back(a);
-        QTextStream(stdout)<<""<<Qt::endl<<a;
     }
     int count=0;
     for(int figure_tie_pointers_size:figure_tie_pointers_sizes){
@@ -254,19 +253,18 @@ void Paint_device::load_data(const QString& name){
             for(QPolygonF* poly:buf){
                 if(static_cast<My_Shape*>(poly)->get_center().x()==p.x()&&static_cast<My_Shape*>(poly)->get_center().y()==p.y()){
                     static_cast<My_Shape*>(buf.at(count))->acces_to_ties_pointers().push_back(poly);
-                    QTextStream(stdout)<<""<<Qt::endl<<static_cast<My_Shape*>(poly)->get_center().x()<<" "<<static_cast<My_Shape*>(poly)->get_center().y();
                 }
             }
         }
-        QTextStream(stdout)<<""<<Qt::endl<<static_cast<My_Shape*>(buf.at(count))->acces_to_ties_pointers().size();
         ++count;
     }
-    QTextStream(stdout)<<""<<Qt::endl<<"size: "<<size<<Qt::endl<<"buf size: "<<buf.size();
+
     QImage* img_buf=new QImage(1920,1080,QImage::Format_ARGB32);
     stream>>(*img_buf);
     base=img_buf;
     painter->end();
     painter->begin(base);
+    painter->setPen(pen);
     figures_arr=buf;
 
 
@@ -288,6 +286,7 @@ void Paint_device::load_data(const QString& name){
             }
         }
     }
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -298,7 +297,7 @@ void Paint_device::save_data(){
 }
 
 
-void Paint_device::save_data_function(){
+void Paint_device::save_data_function(){// сериализация листа фигур и изображения в бинарный файл
     QTextStream(stdout)<<QString(folder_name+"/"+saving_file+".bin");
 QFile file(folder_name+"/"+saving_file+".bin");
 file.open(QIODevice::WriteOnly);

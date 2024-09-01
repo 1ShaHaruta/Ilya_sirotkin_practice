@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     ui->background->setPixmap(QPixmap::fromImage(QImage("../Presets/background.png")));
     ui->background->showFullScreen();
 
+    form=new Retry_form();
+connect(this, SIGNAL(cactus_was_touched()), form, SLOT(show()));
     ///////dinosaur////////
     dino.setFileName("../Presets/dino_50.gif");
     dino.start();
@@ -71,7 +73,8 @@ for(QLabel* cts:cactus_vec){
     timer1->start(clouds_speed);
 
     timer3 =new QTimer(this);
-    timer3->start(counter_speed);
+    connect(this, SIGNAL(cactus_was_touched()), timer3, SLOT(stop()));
+    connect(timer3, &QTimer::timeout, this, &MainWindow::counter_raise);
 
     timer4=new QTimer(this);
     connect(timer4, &QTimer::timeout, this, &MainWindow::cacti_animation);
@@ -107,7 +110,24 @@ void MainWindow::cacti_animation(){
             ||current_cactus->geometry().contains(ui->dinosaur->geometry().center()+QPoint(ui->dinosaur->width()/2,-(ui->dinosaur->height()/2))))
             &&current_cactus!=ui->cactus_null
            ){
-                QTextStream(stdout)<<"loh"<<" ";
+                emit cactus_was_touched();
+             current_cactus->move(1920,current_cactus->y());
+             current_cactus=nullptr;
+             cactus_is_selected=false;
+             ui->cloud1->move(1920,100);
+             ui->cloud2->move(1920,100);
+             ui->cloud3->move(1920,220);
+             cacti_speed=4;
+             timer4->start(cacti_speed);
+             if(ui->counter_2->value()<ui->counter->value()){
+                 ui->counter_2->setValue(ui->counter->value());
+             }
+
+             ui->counter->setValue(0);
+             dino.setFileName("../Presets/dino_50.gif");
+             dino.start();
+             dino.setPaused(true);
+             game_is_started=is_jumping=cloud2_is_flying=cloud3_is_flying=false;
           }
 
      }else{
@@ -162,11 +182,12 @@ void MainWindow::counter_raise(){
 void MainWindow::keyReleaseEvent(QKeyEvent *event){
     if(!game_is_started){
     game_is_started=true;
-    connect(timer3, &QTimer::timeout, this, &MainWindow::counter_raise);
+    timer3->start(counter_speed);
     current_cactus=ui->cactus_null;
     ui->press_button->hide();
     cactus_is_selected=true;
     dino.setPaused(false);
+form->setGeometry(560,240,form->width(),form->height());
     }
     if(event->key()==Qt::Key_Space&&!is_jumping){
         dino.setPaused(true);

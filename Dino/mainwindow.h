@@ -12,6 +12,7 @@
 #include <random>
 #include <QVector>
 #include <QLabel>
+#include "retry_form.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,6 +34,8 @@ private slots:
     void dino_jumping_up();
     void dino_jumping_down();
     void counter_raise();//эта функция заменяет QSpinBox::stepUp чтобы устранить выделение цифр
+signals:
+    void cactus_was_touched();
 private:
     Ui::MainWindow *ui;
     QImage *clouds;
@@ -41,6 +44,7 @@ private:
     QLabel* current_cactus;
     QMovie dino;
     QTimer *timer1, *timer2, *timer3, *timer4;
+    Retry_form* form;
     bool game_is_started;
     bool is_jumping;
     bool cloud2_is_flying;

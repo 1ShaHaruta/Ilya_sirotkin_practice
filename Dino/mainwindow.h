@@ -47,7 +47,7 @@ private:
     bool cloud3_is_flying;
     bool cactus_is_selected;
     const int ground_level=805;
-    const int jump_level=335;
+    const int jump_level=305;
     const int display_center_x=960;
     //////speed/////
     const int dinosaur_speed=3;

@@ -14,11 +14,13 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     ui->background->showFullScreen();
 
     ///////dinosaur////////
-    dino.setFileName("../Presets/dino.png");
+    dino.setFileName("../Presets/dino_50.gif");
     dino.start();
+    dino.setPaused(true);
     ui->dinosaur->setMovie(&dino);
     ui->dinosaur->resize(dino.frameRect().size());
     ui->dinosaur->setGeometry(120,ground_level-ui->dinosaur->height(), ui->dinosaur->width(),ui->dinosaur->height());
+    dino.setPaused(true);
 
     cacti=new QImage[3]();
     for(int i=0;i<3;i++){
@@ -90,6 +92,8 @@ void MainWindow::cacti_animation(){
      if(ui->counter->value()>=400&&cacti_speed==3){
          cacti_speed=2;
          timer4->start(cacti_speed);
+         dino.setFileName("../Presets/dino_40.gif");
+         dino.start();
      }
      }
      if(current_cactus->geometry().center().x()>0){
@@ -160,9 +164,12 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event){
     game_is_started=true;
     connect(timer3, &QTimer::timeout, this, &MainWindow::counter_raise);
     current_cactus=ui->cactus_null;
+    ui->press_button->hide();
     cactus_is_selected=true;
+    dino.setPaused(false);
     }
     if(event->key()==Qt::Key_Space&&!is_jumping){
+        dino.setPaused(true);
         is_jumping=true;
         if(ui->dinosaur->geometry().center().y()>jump_level){
         connect(timer2, &QTimer::timeout, this, &MainWindow::dino_jumping_up);
@@ -202,6 +209,7 @@ void MainWindow::dino_jumping_down(){
         disconnect(timer2, &QTimer::timeout, this, &MainWindow::dino_jumping_down);
         timer2->stop();
         is_jumping=false;
+        dino.setPaused(false);
     }
 }
 
@@ -212,5 +220,7 @@ MainWindow::~MainWindow()
     delete timer1;
     delete timer2;
     delete timer3;
+    delete current_cactus;
+    delete[] cacti;
 }
 

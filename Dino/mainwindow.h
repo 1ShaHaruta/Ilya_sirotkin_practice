@@ -7,7 +7,6 @@
 #include <QMovie>
 #include <chrono>
 #include <thread>
-#include <QThread>
 #include <QTimer>
 #include <random>
 #include <QVector>

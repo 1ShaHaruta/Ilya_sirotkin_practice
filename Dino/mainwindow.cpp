@@ -122,7 +122,7 @@ void MainWindow::cacti_animation(){
              if(ui->counter_2->value()<ui->counter->value()){
                  ui->counter_2->setValue(ui->counter->value());
              }
-
+ui->press_button->show();
              ui->counter->setValue(0);
              dino.setFileName("../Presets/dino_50.gif");
              dino.start();

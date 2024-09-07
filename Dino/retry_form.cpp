@@ -1,3 +1,4 @@
+//Сироткин Илья 5 группа
 #include "retry_form.h"
 #include "ui_retry_form.h"
 

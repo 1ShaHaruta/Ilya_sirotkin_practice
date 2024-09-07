@@ -1,3 +1,4 @@
+//Сироткин Илья 5 группа
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 

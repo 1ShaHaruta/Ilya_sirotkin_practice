@@ -1,3 +1,4 @@
+//Сироткин Илья 5 группа
 #include "mainwindow.h"
 
 #include <QApplication>

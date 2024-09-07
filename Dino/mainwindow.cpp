@@ -1,3 +1,4 @@
+//Сироткин Илья 5 группа
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -47,7 +48,6 @@ connect(this, SIGNAL(cactus_was_touched()), form, SLOT(show()));
 
 for(QLabel* cts:cactus_vec){
     cts->setGeometry(1920,ground_level-cts->height(),cts->width(),cts->height());
-    QTextStream(stdout)<<cts->width()<<" "<<cts->height()<<Qt::endl;
 }
 
     clouds=new QImage[3]();
@@ -125,7 +125,6 @@ void MainWindow::cacti_animation(){
 ui->press_button->show();
              ui->counter->setValue(0);
              dino.setFileName("../Presets/dino_50.gif");
-             dino.start();
              dino.setPaused(true);
              game_is_started=is_jumping=cloud2_is_flying=cloud3_is_flying=false;
           }

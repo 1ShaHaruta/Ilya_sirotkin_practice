@@ -71,7 +71,6 @@ void MainWindow::on_action_triggered()//функция отображает вс
 
 void MainWindow::on_action_2_triggered()//функция отображает все композиции
 {
-    if(direction){
         db=new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"));
         db->setDatabaseName("../DB/My_db.db");
         db->open();
@@ -103,12 +102,7 @@ void MainWindow::on_action_2_triggered()//функция отображает в
         ui->textBrowser->append(buf);
        }
            db->close();
-        }else {
-            QMessageBox msg(QMessageBox::Information, "Message",
-                            "<b>У Вас недостаточно прав</b>"
-                            ,QMessageBox::Ok);
-            msg.exec();
-        }
+
     }
 
 
